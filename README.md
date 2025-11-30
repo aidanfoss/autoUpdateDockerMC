@@ -86,3 +86,8 @@ Tests are containerized using Docker Compose to ensure a consistent environment.
 # Run integration tests
 docker compose -f docker-compose.test.yml up --build
 ```
+
+## Acknowledgements
+
+Special thanks to [itzg](https://github.com/itzg) for his incredible [docker-minecraft-server](https://github.com/itzg/docker-minecraft-server) image. This tool is designed to work seamlessly alongside it, filling the gap for advanced, dependency-aware mod management.
+
