@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  test-runner:
+    image: alpine:3
+    volumes:
+      - .:/app:ro
+      - ./tests/data:/data
+    command: /bin/sh /app/tests/integration_test.sh
+    working_dir: /app
+    environment:
+      - TERM=xterm
