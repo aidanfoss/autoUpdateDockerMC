@@ -7,9 +7,9 @@ services:
   # This service runs FIRST. It downloads/updates mods into the shared volume.
   # When it finishes (exit 0), the actual Minecraft server starts.
   mod-updater:
-    build: .
-    # OR use a pre-built image if you have one:
-    # image: my-repo/mod-updater:latest
+    image: ghcr.io/aidanfoss/autoupdatedockermc:latest
+    # OR build locally:
+    # build: .
     volumes:
       # Mount the SAME data directory as the server
       - ./minecraft-data:/data
