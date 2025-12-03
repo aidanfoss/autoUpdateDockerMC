@@ -66,13 +66,15 @@ clean_list() { sed '/^[[:space:]]*#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[
 SLUG_CACHE="${SERVER_DIR}/.slug_cache.tmp"
 slug_by_pid(){
   pid="$1"
-  grep "^${pid}:" "$SLUG_CACHE" 2>/dev/null | cut -d: -f2 | head -n1
-  if [ $? -ne 0 ] || [ -z "$REPLY" ]; then
+  result="$(grep "^${pid}:" "$SLUG_CACHE" 2>/dev/null | cut -d: -f2 | head -n1)"
+  if [ -z "$result" ]; then
     slug="$(curl -sf "${API_BASE}/project/$pid" | jq -r '.slug')"
     if [ -n "$slug" ] && [ "$slug" != "null" ]; then
       echo "${pid}:${slug}" >> "$SLUG_CACHE"
       echo "$slug"
     fi
+  else
+    echo "$result"
   fi
 }
 
@@ -331,8 +333,8 @@ case "$APPLY_MODE" in
     else
       # First run: back up all jars to be safe
       if ls "$MODS_DIR"/*.jar >/dev/null 2>&1; then
-        log "First run: Found existing jars. Backing up all to ${BK}"
         BK="${SERVER_DIR}/mods_backup_${TS}"; mkdir -p "$BK"
+        log "First run: Found existing jars. Backing up all to ${BK}"
         mv "$MODS_DIR"/*.jar "$BK"/ || true
       else
         log "No existing jars found; clean install."
